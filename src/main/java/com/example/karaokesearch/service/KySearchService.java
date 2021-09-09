@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,24 +20,8 @@ public class KySearchService implements songSearchService{
     private static final String baseUrl = "https://kysing.kr/search/";
 
     @Override
-    public String urlBuilder(SearchRequest searchRequest) {
-        StringBuilder stringBuilder = new StringBuilder(baseUrl + "?");
-        if (searchRequest.getKeyword() != null) {
-            stringBuilder.append("keyword=" + searchRequest.getKeyword());
-        }
-        if (searchRequest.getPage() != null) {
-            stringBuilder.append("&s_page=" + searchRequest.getPage());
-        }
-        if (searchRequest.getSearchCategory() != null) {
-            stringBuilder.append("&category="+ searchRequest.getSearchCategory().getKYVal());
-        }
-        return stringBuilder.toString();
-    }
-
-    public void getSongData(SearchRequest searchRequest) throws IOException {
-        String uri = urlBuilder(searchRequest);
-        System.out.println(uri);
-        Document document = Jsoup.connect(uri).get();
+    public List<Song> getSongData(SearchRequest searchRequest) throws IOException {
+        Document document = Jsoup.connect(baseUrl).data(SearchRequest.toMap(searchRequest)).get();
         Elements elements = document.body().select("div.search_tab").select("ul.search_chart_list");
         List<Song> songs= new ArrayList<>();
         int i = 0;
@@ -53,5 +38,6 @@ public class KySearchService implements songSearchService{
             songs.add(song);
         }
         songs.forEach(System.out::println);
+        return songs;
     }
 }
