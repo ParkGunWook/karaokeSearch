@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:3001")
 @RestController
 @RequestMapping("api/search")
 @Api(tags = "통합 검색수행하는 api입니다.")
