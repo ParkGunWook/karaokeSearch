@@ -7,6 +7,7 @@ import com.example.karaokesearch.service.TjSearchService;
 import com.example.karaokesearch.service.dto.SearchCategory;
 import com.example.karaokesearch.service.dto.SearchRequest;
 import io.swagger.annotations.Api;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -27,10 +28,10 @@ public class KaraokeSearchController {
     }
 
     @GetMapping()
-    public List<Song> getSongs(@RequestParam String keyWord,
-                               @RequestParam Karaoke karaoke,
-                               @RequestParam(required = false) Integer page,
-                               @RequestParam(name = "searchBy") SearchCategory searchCategory
+    public ResponseEntity<List<Song>> getSongs(@RequestParam String keyWord,
+                                              @RequestParam Karaoke karaoke,
+                                              @RequestParam(required = false) Integer page,
+                                              @RequestParam(name = "searchBy") SearchCategory searchCategory
                                ) throws IOException {
         SearchRequest searchRequest = SearchRequest.builder().
                 keyword(keyWord).
@@ -39,9 +40,9 @@ public class KaraokeSearchController {
                 karaoke(karaoke).
                 build();
         if (searchRequest.getKaraoke().equals(Karaoke.TJ)) {
-            return tjSearchService.getSongData(searchRequest);
+            return ResponseEntity.ok(tjSearchService.getSongData(searchRequest));
         } else {
-            return kySearchService.getSongData(searchRequest);
+            return ResponseEntity.ok(kySearchService.getSongData(searchRequest));
         }
     }
 }
