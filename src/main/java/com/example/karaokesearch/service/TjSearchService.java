@@ -26,6 +26,7 @@ import java.util.List;
 public class TjSearchService implements songSearchService{
 
     private static final String baseUrl = "https://www.tjmedia.co.kr/tjsong/song_search_list.asp";
+    private static final String baseYoutubeUrl = "https://www.youtube.com/user/ziller/search?query=";
 
     @Override
     public List<Song> getSongData(SearchRequest searchRequest) throws IOException {
@@ -35,12 +36,17 @@ public class TjSearchService implements songSearchService{
         if (elements.get(0).text().startsWith("검색 결과를")) {
             return songs;
         }
+        elements.forEach(element -> {
+
+        });
         for (Element element : elements) {
-            Elements tdDatas = element.children().select("td");
+            Elements toElements = element.children();
+            Elements tdDatas = element.children();
             Song song = new Song();
             song.setSongNumber(Long.parseLong(tdDatas.get(0).text()));
             song.setTitle(tdDatas.get(1).text());
             song.setSinger(tdDatas.get(2).text());
+            song.setYoutubeLink(baseYoutubeUrl + song.getSongNumber());
             song.setKaraoke(Karaoke.TJ);
             songs.add(song);
         }

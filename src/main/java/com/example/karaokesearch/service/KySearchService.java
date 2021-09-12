@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class KySearchService implements songSearchService{
@@ -24,16 +25,18 @@ public class KySearchService implements songSearchService{
         Document document = Jsoup.connect(baseUrl).data(SearchRequest.toMap(searchRequest)).get();
         Elements elements = document.body().select("div.search_tab").select("ul.search_chart_list");
         List<Song> songs= new ArrayList<>();
+        if (elements.isEmpty()) {
+            return songs;
+        }
+        elements.remove(0);
         int i = 0;
         for(Element element : elements) {
             Elements liDatas = element.children().select("li");
             Song song = new Song();
-            if (liDatas.select("li.search_chart_num").text().equals("곡번호")) {
-                continue;
-            }
             song.setSongNumber(Long.parseLong(liDatas.select(".search_chart_num").text()));
             song.setTitle(liDatas.select(".search_chart_tit").select(".tit:first-child").text());
             song.setSinger(liDatas.select(".search_chart_sng").text());
+            song.setYoutubeLink(liDatas.select(".search_chart_ytb").select("a").attr("href"));
             song.setKaraoke(Karaoke.KY);
             songs.add(song);
         }

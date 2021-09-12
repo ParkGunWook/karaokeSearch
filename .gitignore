@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Personal Information ###
-src/main/resources/applicatioin.yml
+!**/src/main/resources/applicatioin.yml
