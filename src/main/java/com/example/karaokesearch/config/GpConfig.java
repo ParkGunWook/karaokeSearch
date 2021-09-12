@@ -11,7 +11,7 @@ public class GpConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry cr) {
         cr.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:8081")  // 허용할 주소 및 포트
-                .allowedOrigins("http://localhost:8081");  // 허용할 주소 및 포트
+                .allowedOrigins("http://127.0.0.1:8080")  // 허용할 주소 및 포트
+                .allowedOrigins("http://localhost:8080");  // 허용할 주소 및 포트
     }
 }
