@@ -11,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(value = "*")
 @RestController
 @RequestMapping("api/search")
 @Api(tags = "통합 검색수행하는 api입니다.")
@@ -28,13 +28,13 @@ public class KaraokeSearchController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Song>> getSongs(@RequestParam String keyWord,
+    public ResponseEntity<List<Song>> getSongs(@RequestParam String keyword,
                                               @RequestParam Karaoke karaoke,
                                               @RequestParam(required = false) Integer page,
                                               @RequestParam(name = "searchBy") SearchCategory searchCategory
                                ) throws IOException {
         SearchRequest searchRequest = SearchRequest.builder().
-                keyword(keyWord).
+                keyword(keyword).
                 searchCategory(searchCategory).
                 page(page).
                 karaoke(karaoke).
